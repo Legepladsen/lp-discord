@@ -1,3 +1,9 @@
+local Presence = {
+    Activity: string,
+    AssetText: string,
+    SmallAssetText: string,
+}
+
 AddEventHandler('onResourceStart', function (resourceName)
     if (GetCurrentResourceName() ~= resourceName) then
         return
@@ -11,11 +17,17 @@ AddEventHandler('onResourceStart', function (resourceName)
     end
 end)
 
-SetDiscordAppId(Config.applicationId)
-SetRichPresence(Config.richPresence)
-SetDiscordRichPresenceAsset(Config.discordRichPresenceAsset)
-SetDiscordRichPresenceAssetText(Config.discordRichPresenceAssetText)
-SetDiscordRichPresenceAssetSmall(Config.discordRichPresenceAssetSmall)
-SetDiscordRichPresenceAssetSmallText(Config.discordRichPresenceAssetSmallText)
+local function initialSetup () {
+    SetDiscordAppId(Config.applicationId)
+    SetRichPresence(Config.richPresence)
+    SetDiscordRichPresenceAsset(Config.discordRichPresenceAsset)
+    SetDiscordRichPresenceAssetText(Config.discordRichPresenceAssetText)
+    SetDiscordRichPresenceAssetSmall(Config.discordRichPresenceAssetSmall)
+    SetDiscordRichPresenceAssetSmallText(Config.discordRichPresenceAssetSmallText)
+}
 
-print(GetConvar('sv_projectName', '[lp-discord] No hostname configured'))
+function UpdatePresence(presence:Presence) {
+    SetRichPresence(presence.Activity)
+    SetDiscordRichPresenceAssetText(presence.AssetText)
+    SetDiscordRichPresenceAssetSmalltext(presence.SmallAssetText)
+}
