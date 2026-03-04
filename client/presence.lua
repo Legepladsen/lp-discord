@@ -1,16 +1,3 @@
-AddEventHandler('onResourceStart', function (resourceName)
-    if (GetCurrentResourceName() ~= resourceName) then
-        return
-    end
-    if Config.applicationId == nil or Config.applicationId == '' then
-        print('[lp-discord] Error: No applicationId set, did you forget to restart the resource after editing?')
-        return
-    else
-        initialSetup()
-        print('[lp-discord] Rich Presence successfully started')
-    end
-end)
-
 local function initialSetup () 
     SetDiscordAppId(Config.applicationId)
     SetRichPresence(Config.richPresence)
@@ -32,6 +19,24 @@ function UpdatePresence(presence)
     SetDiscordRichPresenceAssetSmallText(presence.AssetSmallText)
 end
 
-RegisterNUICallBack('updateUserPresence', function(data, cb)
-    
+RegisterNUICallback('updateUserPresence', function(data, cb)
+    local presence = {
+        Activity = data.Activity,
+        AssetText = data.AssetText,
+        AssetSmallText = data.AssetSmallText
+    }
+    UpdatePresence(presence)
+end)
+
+AddEventHandler('onResourceStart', function (resourceName)
+    if (GetCurrentResourceName() ~= resourceName) then
+        return
+    end
+    if Config.applicationId == nil or Config.applicationId == '' then
+        print('[lp-discord] Error: No applicationId set, did you forget to restart the resource after editing?')
+        return
+    else
+        initialSetup()
+        print('[lp-discord] Rich Presence successfully started')
+    end
 end)
