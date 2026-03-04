@@ -13,6 +13,7 @@ AddEventHandler('onResourceStart', function (resourceName)
         CancelEvent()
         return
     else
+        initialSetup()
         print('[lp-discord] Rich Presence successfully started')
     end
 end)
